@@ -24,7 +24,8 @@ class MainWindow(QMainWindow):
         button1 = QPushButton("이미지 열기")
         button2 = QPushButton("좌우반전")
         button6 = QPushButton("흑백필터")
-        button5 = QPushButton("렌즈왜곡")
+        button5 = QPushButton("볼록하게")
+        button7 = QPushButton("오목하게")
         button3 = QPushButton("초기화")
         button4 = QPushButton("저장하기")
 
@@ -32,6 +33,7 @@ class MainWindow(QMainWindow):
         button2.clicked.connect(self.flip_image)
         button6.clicked.connect(self.black_white)
         button5.clicked.connect(self.lens)
+        button7.clicked.connect(self.lens1)
         button3.clicked.connect(self.clear_label)
         button4.clicked.connect(self.savefile)
         
@@ -39,6 +41,7 @@ class MainWindow(QMainWindow):
         sidebar.addWidget(button2)
         sidebar.addWidget(button6)
         sidebar.addWidget(button5)
+        sidebar.addWidget(button7)
         sidebar.addWidget(button3)
         sidebar.addWidget(button4)
 
@@ -107,17 +110,17 @@ class MainWindow(QMainWindow):
         image = img2
         height, width = image.shape[:2]
 
-        exp = 2  # 볼록지수 1.1~, 오목지수 0.1~1.0
+        exp = 1.1  
         scale = 1
         mapy, mapx = np.indices((height, width), dtype=np.float32)
 
         mapx = 2 * mapx / (width-1) - 1
         mapy = 2 * mapy / (height-1) - 1
 
-        r, theta = cv2.cartToPolar(mapx, mapy)  # 직교좌표를 극좌표로 변환시키는
+        r, theta = cv2.cartToPolar(mapx, mapy)  
         r[r < scale] = r[r < scale] ** exp
 
-        mapx, mapy = cv2.polarToCart(r, theta)  # 극좌표를 직교좌표로 변환시켜주는 함수
+        mapx, mapy = cv2.polarToCart(r, theta)  
         mapx = ((mapx +  1) * width - 1) / 2
         mapy = ((mapy +  1) * height - 1) / 2
 
@@ -134,6 +137,37 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap(image)
         self.lable2.setPixmap(pixmap)
 
+    def lens1(self):
+        global img2
+        image = img2
+        height, width = image.shape[:2]
+
+        exp = 0.9  
+        scale = 1
+        mapy, mapx = np.indices((height, width), dtype=np.float32)
+
+        mapx = 2 * mapx / (width-1) - 1
+        mapy = 2 * mapy / (height-1) - 1
+
+        r, theta = cv2.cartToPolar(mapx, mapy)  
+        r[r < scale] = r[r < scale] ** exp
+
+        mapx, mapy = cv2.polarToCart(r, theta)  
+        mapx = ((mapx +  1) * width - 1) / 2
+        mapy = ((mapy +  1) * height - 1) / 2
+
+        distorted = cv2.remap(image, mapx, mapy, cv2.INTER_LINEAR)
+        img2 = distorted
+
+        h, w = distorted.shape[0], distorted.shape[1]
+        if isgray == True:
+            byte_per_line = w
+            image = QImage(distorted.data, w, h, byte_per_line, QImage.Format_Grayscale8)
+        else:
+            byte_per_line = 3 * w
+            image = QImage(distorted.data, w, h, byte_per_line, QImage.Format_RGB888).rgbSwapped()
+        pixmap = QPixmap(image)
+        self.lable2.setPixmap(pixmap)
 
     def savefile(self):
         file_name = QFileDialog.getSaveFileName(self, "이미지 열기", "./")
