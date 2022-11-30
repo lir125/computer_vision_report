@@ -28,6 +28,7 @@ class MainWindow(QMainWindow):
         button7 = QPushButton("오목하게")
         button8 = QPushButton("모자이크")
         button9 = QPushButton("경계추출")
+        button10 = QPushButton("블러처리")
         button3 = QPushButton("초기화")
         button4 = QPushButton("저장하기")
 
@@ -38,6 +39,7 @@ class MainWindow(QMainWindow):
         button7.clicked.connect(self.lens1)
         button8.clicked.connect(self.mosaic)
         button9.clicked.connect(self.canny)
+        button10.clicked.connect(self.blurr)
         button3.clicked.connect(self.clear_label)
         button4.clicked.connect(self.savefile)
         
@@ -48,6 +50,7 @@ class MainWindow(QMainWindow):
         sidebar.addWidget(button7)
         sidebar.addWidget(button8)
         sidebar.addWidget(button9)
+        sidebar.addWidget(button10)
         sidebar.addWidget(button3)
         sidebar.addWidget(button4)
 
@@ -209,8 +212,10 @@ class MainWindow(QMainWindow):
         img = img2
         global isgray
         isgray = True
-        
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if isgray ==True:
+            img_gray = img
+        else:
+            img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         median = np.median(img_gray)
 
         lower_threshold = int(max(0, (1.0 - 0.33) * median))
@@ -218,6 +223,22 @@ class MainWindow(QMainWindow):
 
         img_canny = cv2.Canny(img_gray, lower_threshold, upper_threshold)
         img2 = img_canny
+        h, w = img2.shape[0], img2.shape[1]
+        if isgray == True:
+            byte_per_line = w
+            image = QImage(img2.data, w, h, byte_per_line, QImage.Format_Grayscale8)
+        else:
+            byte_per_line = 3 * w
+            image = QImage(img2.data, w, h, byte_per_line, QImage.Format_RGB888).rgbSwapped()
+        pixmap = QPixmap(image)
+        self.lable2.setPixmap(pixmap)
+
+    def blurr(self):
+        global img2
+        img = img2
+        blur = cv2.bilateralFilter(img, 5, 75, 75)
+        
+        img2 = blur
         h, w = img2.shape[0], img2.shape[1]
         if isgray == True:
             byte_per_line = w
