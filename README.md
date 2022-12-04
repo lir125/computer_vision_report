@@ -32,7 +32,7 @@
 * 오목하게 - 사진에 오목렌즈를 씌웁니다. 반복하여 클릭 할 시 더 오목해집니다.
 ![image](https://user-images.githubusercontent.com/70375856/200578462-cec1719e-7608-47e8-ba57-a70d6d6dae68.png)
 
-* 모자이크 - 원하는 부위를 마우스로 지정한 후 "스페이스바"를 눌러 모자이크를 적용합니다. "esc"키로 창을 종료합니다.
+* 모자이크 - 원하는 부위를 마우스로 지정(드래그)한 후 "스페이스바"를 눌러 모자이크를 적용합니다. "esc"키로 창을 종료합니다.
 ![image](https://user-images.githubusercontent.com/70375856/205492191-51d9a105-b14f-4ba6-8091-365f2ddb19c9.png)
 ![image](https://user-images.githubusercontent.com/70375856/205492199-9eb31b9f-0273-457e-8c32-5372360b270c.png)
 
