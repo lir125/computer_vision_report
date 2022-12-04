@@ -16,7 +16,8 @@
 ![image](https://user-images.githubusercontent.com/70375856/200578886-b16305d9-69b6-483e-9e32-a01bb5ea66da.png)
 ![image](https://user-images.githubusercontent.com/70375856/200578942-b5a7774b-c516-43d3-ab70-06d7b18bd29f.png)
 
-효과 - 모든 효과는 중첩 가능하며 (ex : 좌우반전 후 흑백필터, 오목하게 총 2번) 초기화를 클릭시 원본사진을 다시
+효과 - 모든 효과는 중첩 가능하며 (ex : 좌우반전 후 흑백필터, 오목하게 총 2번) 
+       초기화를 클릭시 원본사진을 다시 불러옵니다.
 
 * 좌우반전 - 사진을 좌우반전 시킵니다. 다시 클릭시 원래대로 돌아옵니다.
 ![image](https://user-images.githubusercontent.com/70375856/200577460-0c89a2d1-b250-4e62-9ce2-349cc60fa62d.png)
